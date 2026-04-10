@@ -2,9 +2,62 @@
 <html>
 <head>
   <title>Spider-Man World</title>
-</head>
-<body style="background:black; color:white; text-align:center;">
-  <h1>🕷️ Welcome to Spider-Man World</h1>
-  <p>My first cool website 🔥</p>
-</body>
-</html>
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: url('https://wallpapercave.com/wp/wp1812948.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: zoom 5s ease;
+    }
+
+    @keyframes zoom {
+      from { transform: scale(1.3); }
+      to { transform: scale(1); }
+    }
+
+    h1 {
+      font-size: 40px;
+      text-shadow: 0 0 20px red;
+      animation: fadeUp 2s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      box-shadow: 0 0 20px red;
+    }
+
+    /* Web line */
+    .web {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;

@@ -1,78 +1,505 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Spider-Man World</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spider-Man World</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-    }
+  :root {
+    --red: #e8001c;
+    --blue: #0033a0;
+    --dark: #05080f;
+    --web: rgba(255,255,255,0.08);
+  }
 
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(black, #111);
-    }
+  body {
+    background: var(--dark);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
 
-    h1 {
-      font-size: 40px;
-      text-shadow: 0 0 20px red;
-      animation: fadeUp 2s ease;
-    }
+  /* WEB BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 60px, var(--web) 60px, var(--web) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, var(--web) 60px, var(--web) 61px);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  /* DIAGONAL WEB LINES */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 84px, rgba(255,255,255,0.03) 84px, rgba(255,255,255,0.03) 85px),
+      repeating-linear-gradient(-45deg, transparent, transparent 84px, rgba(255,255,255,0.03) 84px, rgba(255,255,255,0.03) 85px);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      background: red;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+  /* GLOW ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 400px; height: 400px; background: var(--red); top: -100px; right: -100px; animation: drift 8s ease-in-out infinite alternate; }
+  .orb2 { width: 350px; height: 350px; background: var(--blue); bottom: -100px; left: -100px; animation: drift 10s ease-in-out infinite alternate-reverse; }
 
-    button:hover {
-      box-shadow: 0 0 20px red;
-    }
+  @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, 40px); } }
 
-    /* Web drop */
-    .web {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 2px;
-      height: 150px;
-      background: white;
-      animation: drop 1s ease;
-    }
+  /* NAVBAR */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(5,8,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,0,28,0.3);
+  }
 
-    @keyframes drop {
-      from { top: -150px; }
-      to { top: 0; }
-    }
-  </style>
+  .logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-shadow: 0 0 20px rgba(232,0,28,0.6);
+  }
+
+  .nav-links a {
+    color: #aaa;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--red); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 24px 60px;
+  }
+
+  .spider-icon {
+    font-size: 100px;
+    animation: spiderpulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(232,0,28,0.8));
+    margin-bottom: 20px;
+  }
+
+  @keyframes spiderpulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(232,0,28,0.6)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 50px rgba(232,0,28,1)); }
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(52px, 14vw, 110px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #fff 0%, var(--red) 50%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    background-size: 200%;
+  }
+
+  @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin: 16px 0 40px;
+    font-weight: 600;
+  }
+
+  .quote-box {
+    background: linear-gradient(135deg, rgba(232,0,28,0.15), rgba(0,51,160,0.15));
+    border: 1px solid rgba(232,0,28,0.3);
+    border-radius: 12px;
+    padding: 20px 30px;
+    max-width: 480px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(6px);
+  }
+
+  .quote-box p {
+    font-size: 17px;
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+
+  .quote-box span {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--red);
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 36px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+    letter-spacing: 3px;
+    border-radius: 4px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(232,0,28,0.4);
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(232,0,28,0.7);
+  }
+
+  /* WEB SHOOTER ANIMATION */
+  .web-line {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shoot 4s ease-in-out infinite;
+    opacity: 0;
+  }
+
+  @keyframes shoot {
+    0% { opacity: 0; top: -10%; height: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; top: 110%; height: 300px; }
+  }
+
+  /* CARDS SECTION */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: 60px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 42px;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(232,0,28,0.4);
+  }
+
+  .section-line {
+    width: 60px;
+    height: 3px;
+    background: var(--red);
+    margin: 0 auto 40px;
+    border-radius: 2px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 28px 22px;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(6px);
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(232,0,28,0.5);
+    box-shadow: 0 20px 40px rgba(232,0,28,0.15);
+  }
+
+  .card-icon { font-size: 44px; margin-bottom: 14px; }
+
+  .card h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin: 50px 0;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 54px;
+    color: var(--red);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(232,0,28,0.5);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  footer span { color: var(--red); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SWINGING SPIDER */
+  .swing-spider {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    font-size: 32px;
+    z-index: 200;
+    animation: swing 3s ease-in-out infinite;
+    transform-origin: top center;
+    filter: drop-shadow(0 0 10px rgba(232,0,28,0.8));
+  }
+
+  @keyframes swing {
+    0%, 100% { transform: rotate(-20deg); }
+    50% { transform: rotate(20deg); }
+  }
+</style>
 </head>
-
 <body>
 
-<div class="web"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 
-<div class="hero">
-  <h1>🕷️ Enter the Spider-Verse</h1>
-  <button onclick="alert('Welcome Hero 🕸️')">Explore Now</button>
+<!-- Swinging spider -->
+<div class="swing-spider">🕷️</div>
+
+<!-- Web lines -->
+<div class="web-line" style="left:15%; animation-delay:0s; animation-duration:5s;"></div>
+<div class="web-line" style="left:40%; animation-delay:2s; animation-duration:6s;"></div>
+<div class="web-line" style="left:70%; animation-delay:1s; animation-duration:4.5s;"></div>
+<div class="web-line" style="left:88%; animation-delay:3s; animation-duration:5.5s;"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">🕸️ Spider-Man</div>
+  <div class="nav-links">
+    <a href="#powers">Powers</a>
+    <a href="#villains">Villains</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="spider-icon">🕷️</div>
+  <h1>Spider-Man<br>World</h1>
+  <p class="hero-sub">Your Friendly Neighbourhood Hero</p>
+  <div class="quote-box">
+    <p>"With great power comes great responsibility."</p>
+    <span>— Uncle Ben</span>
+  </div>
+  <a href="#powers" class="btn">Explore the World</a>
+</section>
+
+<!-- STATS -->
+<div class="section" id="about">
+  <div class="stats reveal">
+    <div class="stat">
+      <div class="stat-num">60+</div>
+      <div class="stat-label">Years of Legacy</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Spider-Sense</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">NYC</div>
+      <div class="stat-label">Home City</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">#1</div>
+      <div class="stat-label">Hero Ever</div>
+    </div>
+  </div>
 </div>
 
+<!-- POWERS SECTION -->
+<section class="section" id="powers">
+  <h2 class="section-title reveal">Super Powers</h2>
+  <div class="section-line reveal"></div>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="card-icon">🕸️</div>
+      <h3>Web Slinging</h3>
+      <p>Shoots organic webs with incredible precision, swinging across New York at breakneck speed.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">⚡</div>
+      <h3>Spider-Sense</h3>
+      <p>A precognitive sixth sense that warns of incoming danger before it happens.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">💪</div>
+      <h3>Super Strength</h3>
+      <p>Can lift up to 10 tons and punch through solid steel with ease.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🧱</div>
+      <h3>Wall Crawling</h3>
+      <p>Microscopic hooks on fingertips allow clinging to any surface — walls, ceilings, glass.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🧠</div>
+      <h3>Genius Intellect</h3>
+      <p>Peter Parker is a brilliant scientist who built his own web-shooters and suits.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🏃</div>
+      <h3>Super Agility</h3>
+      <p>Reflexes and agility far beyond any Olympic athlete — almost impossible to hit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VILLAINS SECTION -->
+<section class="section" id="villains">
+  <h2 class="section-title reveal">Famous Villains</h2>
+  <div class="section-line reveal"></div>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="card-icon">🦅</div>
+      <h3>Green Goblin</h3>
+      <p>Norman Osborn — Spider-Man's greatest and most personal enemy.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🕷️</div>
+      <h3>Venom</h3>
+      <p>Eddie Brock bonded with an alien symbiote — a dark mirror of Spider-Man.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🐙</div>
+      <h3>Doctor Octopus</h3>
+      <p>Otto Octavius with four mechanical tentacle arms of incredible power.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with ❤️ by <span>luciferwasenocen777</span> · Spider-Man World 🕸️</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Web shoot on click
+  document.addEventListener('click', (e) => {
+    const dot = document.createElement('div');
+    dot.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:8px;height:8px;background:rgba(232,0,28,0.8);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);animation:pop 0.5s ease forwards;`;
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 500);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = `@keyframes pop { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 100%{transform:translate(-50%,-50%) scale(3);opacity:0} }`;
+  document.head.appendChild(style);
+</script>
 </body>
 </html>
